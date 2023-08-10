@@ -4,6 +4,7 @@ import numpy as np
 # %matplotlib inline
 import matplotlib. pyplot as plt
 import matplotlib
+import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from keras.layers import LSTM, Dense, Dropout
 from sklearn.model_selection import TimeSeriesSplit
@@ -22,24 +23,28 @@ from keras.utils import plot_model
 
 
 
-
 # Get the Dataset
-apple_data = PD.read_csv("prices-split-adjusted.csv")
-# column_names = ['date', 'symbol', 'open', 'close', 'low', 'high', 'volume']
+whole_data = PD.read_csv("prices-split-adjusted.csv")
 df = PD.read_csv("prices-split-adjusted.csv", header=0, index_col='date', parse_dates=True)
-print(df.head())
+target_symbol = 'AAPL'
+filtered_df = df[df['symbol'] == target_symbol]
+
+print(filtered_df.head())
+
+
+print("Filtered Dataframe Shape:", filtered_df.shape)
+print("Null Value Present in Filtered DataFrame:", filtered_df.isnull().values.any())
+
+
+filtered_df['close'].plot()
+plt.title(f'{target_symbol} Stock Prices')
+plt.xlabel('Date')
+plt.ylabel('Close Price')
+plt.show()
+
+quit()
 
 ## todo: make df store only the data rows which have symbol = AAPL
-
-
-# Print the shape of Dataframe and Check for Null Values
-print("Dataframe Shape:", df.shape)
-print("Null Value Present:", df.isnull().values.any())
-
-
-df['close'].plot()
-#plt.show()
-
 
 # Set Target Variable
 output_var = PD.DataFrame(df['close'])

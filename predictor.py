@@ -53,9 +53,9 @@ y_train, y_test = output_var[:test_index].values.ravel(), output_var[test_index:
 print(y_train)
 
 naive_predictions = np.roll(y_test, -1)
-naive_predictions[-1] = y_test[-1]  # Set the last prediction to the last observed value
+naive_predictions[-1] = y_test[-1]
 naive_mse = mean_squared_error(y_test, naive_predictions)
-print("Naïve Model MSE:", naive_mse)
+print("Naive Model MSE:", naive_mse)
 
 trainX = np.array(X_train)
 testX = np.array(X_test)
@@ -74,8 +74,8 @@ y_pred = lstm.predict(X_test)
 
 plt.plot(y_test, label='True Value')
 plt.plot(y_pred, label='LSTM Value')
-plt.plot(naive_predictions, label='Naïve Value')
-plt.title("Prediction Comparison: LSTM vs Naïve")
+plt.plot(naive_predictions, label='Naive Value')
+plt.title("Prediction Comparison: LSTM vs Naive")
 plt.xlabel('Time Scale')
 plt.ylabel('Scaled USD')
 plt.legend()

@@ -87,154 +87,128 @@ These lines read and preprocess the data in the "prices-split-adjusted.csv" with
 “index_col='date'” sets the 'date' column as the index for the dataframe, allowing for time-based indexing and analysis.[31]
 
 “parse_dates=True” tells pandas to interpret the 'date' column as dates, so that they are treated as datetime objects.[32]
-
+```python
 target_symbol = 'AAPL'
-
 filtered_df = df[df['symbol'] == target_symbol]
+print(filtered_df.head()) 
+```
 
-print(filtered_df.head()) [15]
-
-These lines filter data and look for a specific symbol in the whole dataset. The code filters the dataframe df to include only the rows where the 'symbol' column is equal to 'AAPL'. This manipulation produces a new data frame named `filtered_df` containing the stock symbol "AAPL". After that, the “print(filtered_df())” will print the first few lines of the filtered_df data frame. 
-
-print("Filtered Dataframe Shape:", filtered_df.shape) [15]
-
-This line of code outputs the dimensions of the data frame named filtered_df, i.e. the number of rows and columns in the data frame.[33]
-
-print("Null Value Present in Filtered DataFrame:", filtered_df.isnull().values.any()) [15]
-
-This line of code verifies the presence of nulls (missing values) in the `filtered_df` data frame, verifying that each element is null with the `isnull()` function, and then calculating the total number of nulls in each column using `sum()`. Finally, it prints out the corresponding information about the presence of null values in the data frame.[34]
-
+These lines filter data and look for a specific symbol in the whole dataset. The code filters the dataframe df to include only the rows where the 'symbol' column is equal to 'AAPL'. [15]This manipulation produces a new data frame named `filtered_df` containing the stock symbol "AAPL". After that, the “print(filtered_df())” will print the first few lines of the filtered_df data frame. 
+```python
+print("Filtered Dataframe Shape:", filtered_df.shape) 
+```
+This line of code outputs the dimensions of the data frame named filtered_df, i.e. the number of rows and columns in the data frame.[15][33]
+```python
+print("Null Value Present in Filtered DataFrame:", filtered_df.isnull().values.any()) 
+```
+This line of code verifies the presence of nulls (missing values) in the `filtered_df` data frame, verifying that each element is null with the `isnull()` function, and then calculating the total number of nulls in each column using `sum()`. Finally, it prints out the corresponding information about the presence of null values in the data frame.[15][34]
+```python
 filtered_df['close'].plot()
-
 plt.title(f'{target_symbol} Stock Prices')
-
 plt.xlabel('Date')
-
 plt.ylabel('Close Price')
-
-plt.show() [15]
-
-These lines of code generate a line graph using the ‘close price’ column extracted from the ‘filtered_df’ data frame, which indicates the closing price of the ‘AAPL’ stock. The code also sets the title of the graph to encompass the stock symbol (‘AAPL’) and labels the x-axis with the ‘date’ and the y-axis with the ‘close price’. Finally, it displays the plot using plt.show().
-
-output_var = PD.DataFrame(filtered_df['close']) [15]
-
-This line of code generates a new data frame called "output_var" that is populated exclusively with the "closing price" column extracted from the `filtered_df` data frame. The objective of this measure is to extract the "close_price" column into a separate data frame for subsequent processing and analysis.[35]
-
-features = ['open', 'close', 'high', 'low', 'volume'] [15]
-
-This line defines a list called 'features' that encompasses the column names from the filtered_df DataFrame, specifically selecting columns such as 'open,' 'close,' 'high,' 'low,' and 'volume'. These selected columns are designated as the input variables or features for the LSTM model in subsequent analysis.[36]
-
+plt.show() 
+```
+These lines of code generate a line graph using the ‘close price’ column extracted from the ‘filtered_df’ data frame, which indicates the closing price of the ‘AAPL’ stock. The code also sets the title of the graph to encompass the stock symbol (‘AAPL’) and labels the x-axis with the ‘date’ and the y-axis with the ‘close price’. Finally, it displays the plot using plt.show().[15]
+```python
+output_var = PD.DataFrame(filtered_df['close']) 
+```
+This line of code generates a new data frame called "output_var" that is populated exclusively with the "closing price" column extracted from the `filtered_df` data frame. The objective of this measure is to extract the "close_price" column into a separate data frame for subsequent processing and analysis.[15][35]
+```python
+features = ['open', 'close', 'high', 'low', 'volume'] 
+```
+This line defines a list called 'features' that encompasses the column names from the filtered_df DataFrame, specifically selecting columns such as 'open,' 'close,' 'high,' 'low,' and 'volume'. These selected columns are designated as the input variables or features for the LSTM model in subsequent analysis.[15][36]
+```python
 scaler = MinMaxScaler()
-
 feature_transform = scaler.fit_transform(filtered_df[features])
-
 feature_transform = PD.DataFrame(columns=features, data=feature_transform, index=filtered_df.index)
-
-feature_transform.head() [15]
-
-These lines utilize the MinMaxScaler to scale selected features within the filtered_df dataframe. By applying this scaling operation, the features are transformed to a common range, between 0 and 1. The scaled values are organized into a new dataframe named feature_transform, where each column corresponds to a scaled feature, and the index is retained from the original filtered_df.[37][38]
-
-`test_index = round(len(feature_transform) * 0.8)` [15]
-
-This line calculates the index that separates the data into training and testing sets. The index is computed as 80% of the total length of the feature_transform dataframe.
-
-`X_train, X_test = feature_transform[:test_index], feature_transform[test_index:]` [15]
-
-This line splits the scaled feature data stored in the feature_transform dataframe into training and testing sets. X_train contains the first test_index rows of scaled features, representing the training set, and X_test contains the remaining rows, representing the testing set.
-
-
+feature_transform.head()
 ```
+These lines utilize the MinMaxScaler to scale selected features within the filtered_df dataframe. By applying this scaling operation, the features are transformed to a common range, between 0 and 1. The scaled values are organized into a new dataframe named feature_transform, where each column corresponds to a scaled feature, and the index is retained from the original filtered_df.[15][37][38]
+```python
+`test_index = round(len(feature_transform) * 0.8)` 
+```
+This line calculates the index that separates the data into training and testing sets. The index is computed as 80% of the total length of the feature_transform dataframe.[15]
+```python
+`X_train, X_test = feature_transform[:test_index], feature_transform[test_index:]` 
+```
+This line splits the scaled feature data stored in the feature_transform dataframe into training and testing sets. X_train contains the first test_index rows of scaled features, representing the training set, and X_test contains the remaining rows, representing the testing set.[15]
+
+
+```python
 y_train, y_test = output_var[:test_index].values.ravel(), output_var[test_index:].values.ravel()
+print(y_train) 
 ```
-
-
-`print(y_train)` [15]
-
-This line splits the output variable into training and testing sets. y_train contains the corresponding values for the training set, and y_test contains the corresponding values for the testing set. The .values.ravel() method is used to convert the pandas Series into a numpy array. The last line prints the array containing the output variable values for the training set.[39]
-
-`naive_predictions = np.roll(y_test, 1)` [15]
-
-This line shifts the y_test array by one position to the right using NumPy's np.roll function. This means that each prediction is set to the value of the previous day's observed value.[40]
-
-`naive_predictions[0] = y_train[-1]` [15]
-
-This line sets the first element in naive_predictions to be the same as the last element in y_test. Since there's no previous day's observed value available in y_test for the first day of the test set, the code sets the first element in naive_predictions to be equal to the last observed value in the training set, which is y_train[-1].
-
-
+This line splits the output variable into training and testing sets. y_train contains the corresponding values for the training set, and y_test contains the corresponding values for the testing set. The .values.ravel() method is used to convert the pandas Series into a numpy array. The last line prints the array containing the output variable values for the training set.[15][39]
+```python
+`naive_predictions = np.roll(y_test, 1)` 
 ```
+This line shifts the y_test array by one position to the right using NumPy's np.roll function. This means that each prediction is set to the value of the previous day's observed value.[15][40]
+```python
+`naive_predictions[0] = y_train[-1]` 
+```
+This line sets the first element in naive_predictions to be the same as the last element in y_test. Since there's no previous day's observed value available in y_test for the first day of the test set, the code sets the first element in naive_predictions to be equal to the last observed value in the training set, which is y_train[-1].[15]
+
+```python
 naive_mse = mean_squared_error(y_test, naive_predictions)
+print("Naive Model MSE:", naive_mse)` 
 ```
+This line calculates the mean squared error between the true test values (y_test) and the predictions made by the naive model (naive_predictions). Then, it prints the calculated mean squared error for the naive model.[15] [39][41]
 
-
-`print("Naive Model MSE:", naive_mse)` [15] [39]
-
-This line calculates the mean squared error between the true test values (y_test) and the predictions made by the naive model (naive_predictions). Then, it prints the calculated mean squared error for the naive model.[41]
-
+```python
 trainX = np.array(X_train)
-
 testX = np.array(X_test)
-
 X_train = trainX.reshape(X_train.shape[0], 1, X_train.shape[1])
+X_test = testX.reshape(X_test.shape[0], 1, X_test.shape[1]) 
+```
+These lines convert the training and testing feature datasets from pandas dataframes to numpy arrays. It then reshapes these arrays to match the input shape required by an LSTM model. LSTM models expect input data to be in the form of (batch_size, timesteps, features), where batch_size is the number of samples in each batch, timesteps is the sequence length, and features is the number of input features.[15][42][43][44][45][46][47][48]
 
-X_test = testX.reshape(X_test.shape[0], 1, X_test.shape[1]) [15] 
-
-These lines convert the training and testing feature datasets from pandas dataframes to numpy arrays. It then reshapes these arrays to match the input shape required by an LSTM model. LSTM models expect input data to be in the form of (batch_size, timesteps, features), where batch_size is the number of samples in each batch, timesteps is the sequence length, and features is the number of input features.[42][43][44][45][46][47][48]
-
+```python
 lstm = Sequential()
-
 lstm.add(LSTM(64, input_shape=(1, trainX.shape[1]), activation='relu', return_sequences=False))
-
 lstm.add(Dense(1))
-
-lstm.compile(loss='mean_squared_error', optimizer='adam') [15] 
-
-These lines define the architecture of the LSTM model using Keras' Sequential API. It adds an LSTM layer with 64 units, specifying the input shape (1, trainX.shape[1]) which corresponds to the timesteps and number of features. The activation function used is 'relu', which is an activation function that introduces the property of non-linearity to a deep learning model and solves the vanishing gradients issue. The return_sequences parameter is set to False, indicating that this LSTM layer does not return sequences, instead, the LSTM layer only returns the last output since we only care about the final output. After the LSTM layer, a Dense layer with a single output unit is added, a layer that helps to adjust the dimensionality of the previous layer's output, enabling the model to be more flexible in defining relationships between data.[49][50][51][52][53][54]
-
-plot_model(lstm, show_shapes=True, show_layer_names=True) [15] 
-
+lstm.compile(loss='mean_squared_error', optimizer='adam') 
+```
+These lines define the architecture of the LSTM model using Keras' Sequential API. It adds an LSTM layer with 64 units, specifying the input shape (1, trainX.shape[1]) which corresponds to the timesteps and number of features. The activation function used is 'relu', which is an activation function that introduces the property of non-linearity to a deep learning model and solves the vanishing gradients issue. The return_sequences parameter is set to False, indicating that this LSTM layer does not return sequences, instead, the LSTM layer only returns the last output since we only care about the final output. After the LSTM layer, a Dense layer with a single output unit is added, a layer that helps to adjust the dimensionality of the previous layer's output, enabling the model to be more flexible in defining relationships between data.[15][49][50][51][52][53][54]
+```python
+plot_model(lstm, show_shapes=True, show_layer_names=True) 
+```
 This line generates a visualization of the model architecture using the plot_model function from Keras.
 
 show_shapes=True: allow to get a summary of your model's architecture and the number of parameters that it has/ to show the output shapes of each layer.
 
-show_layer_names=True: allow to show layer names in the graph. [55][56][57]
-
-history=lstm.fit(X_train, y_train, epochs=200, batch_size=1, verbose=1) [15] 
-
+show_layer_names=True: allow to show layer names in the graph. [15][55][56][57]
+```python
+history=lstm.fit(X_train, y_train, epochs=200, batch_size=1, verbose=1) 
+```
 This line trains the compiled LSTM model using the training data (X_train and y_train). 
 
 epochs=200: 200 complete passes of the training dataset through the algorithm.
 
 batch_size=1: samples processed before the model is updated
+verbose=1 : Displays progress bar with logs (default).[15][58][59][60]
+```python
+y_pred= lstm.predict(X_test) 
+```
+This line uses the trained LSTM model to predict the target values for the test data (X_test). The predicted values are stored in the y_pred array.[15][61]
 
-verbose=1 : Displays progress bar with logs (default).[58][59][60]
-
-y_pred= lstm.predict(X_test) [15] 
-
-This line uses the trained LSTM model to predict the target values for the test data (X_test). The predicted values are stored in the y_pred array.[61]
-
+```python
 lstm_mse = mean_squared_error(y_test, y_pred)
+print("LSTM MSE: ", lstm_mse)  
+```
+This line calculates the mean squared error between the true test values (y_test) and the predictions made by the LSTM model (y_pred). Then, it prints the calculated mean squared error for the LSTM model.[15][41]
 
-print("LSTM MSE: ", lstm_mse) [15] 
-
-This line calculates the mean squared error between the true test values (y_test) and the predictions made by the LSTM model (y_pred). Then, it prints the calculated mean squared error for the LSTM model.[41]
-
+```python
 plt.plot(y_test, label='True Value')
-
 plt.plot(y_pred, label='LSTM Value')
-
 plt.plot(naive_predictions, label='Naive Value')
-
 plt.title("Prediction Comparison: LSTM vs Naive")
-
 plt.xlabel('Time Scale')
-
 plt.ylabel('Scaled USD')
-
 plt.legend()
-
-plt.show() [15] 
-
-These lines create a line plot to visualize the comparison between the true values (y_test) and the predicted values (y_pred) obtained from the LSTM model and the naive model. The x-axis represents the time scale, and the y-axis represents the scaled USD values. The legend distinguishes between the true values, LSTM predictions, and naive predictions. The resulting plot helps assess how well the LSTM model performs compared to a simple naive model. plt.legend(): creates an area on the graph which describes all the elements of a graph.[62]
+plt.show() 
+```
+These lines create a line plot to visualize the comparison between the true values (y_test) and the predicted values (y_pred) obtained from the LSTM model and the naive model. The x-axis represents the time scale, and the y-axis represents the scaled USD values. The legend distinguishes between the true values, LSTM predictions, and naive predictions. The resulting plot helps assess how well the LSTM model performs compared to a simple naive model. plt.legend(): creates an area on the graph which describes all the elements of a graph.[15][62]
 
 plt.show(): displays the plot.[63]
 

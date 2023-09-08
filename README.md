@@ -1,16 +1,16 @@
-**Apple Stock Market Price Prediction Using LSTM**
+# Apple Stock Market Price Prediction Using LSTM
 
 Research Question: How can historical stock data from 2010 to 2016 for Apple be used to train a neural network for forecasting future stock prices by implementing a Python script?
 
-Abstract:
+### Abstract:
 
 This research aims to predict the future stock prices of Apple Inc. by utilizing historical stock market indicators (e.g., open, close, low, high, volume) from 2010 to 2016. Python scripts will be implemented to analyze a comprehensive dataset obtained from the New York Stock Exchange (NYSE) and utilize advanced statistical techniques and machine learning algorithms to build a computationally sophisticated predictive model. The Python scripts will automate the model to achieve efficient and accurate predictions. The developed model will be evaluated using robust metrics such as Mean Squared Error (MSE). Stochastic Gradient Descent (SGD) will be used to train the model. By leveraging these comprehensive categories of variables, this research aims to provide a valuable tool for investors and financial analysts to make informed decisions in the dynamic Apple stock market environment. 
 
-Introduction:
+### 1. Introduction:
 
 Imagine how lucrative it would be for investors if they were capable of peeking into the future of the stock market, deciphering its mysterious laws, and unraveling the secrets of profitable investing. In today's fast-paced and volatile financial environment, accurately predicting stock market trends is sought after by investors, financial analysts and policy makers. With noise and uncertainty associated with the stock market, manipulating the trend of the stock market, and makes it challenging to identify and predict stock market trends. Market values are affected on a regular basis by a multitude of factors such as changes in the national economy, product values, investor sentiment, weather, and political affairs.[1] For the immense and intricate Apple's market, this study intends to address a fundamental question: how can a neural network be trained using Python scripts to predict future stock prices using Apple's historical stock data from 2010 to 2016, incorporating relevant variables? By building a comprehensive predictive model through this methodology, this research will enable investors and financial analysts to make informed decisions by providing them with a useful and sophisticated tool that will allow them to navigate the dynamic Apple stock market environment with fluidity. By utilizing advanced predictive models with neural networks, investors and analysts can derive in-depth insights into market tendencies, identify potential turning points, and evaluate risk exposures pertaining to particular stocks in a more informed capacity.[2] This research will provide valuable insights for financial analysts to be more precise and effective in evaluating company valuations, providing well-reasoned recommendations to their clients, and ensuring that their investment decisions are commensurate with the dynamics of the market and one's risk profile.[3] In this research, Long Short-Term Memory (LSTM) was utilized to predict the trend of the Apple stock market. The model simulates the volatility of the Apple stock market during the period from 2010 to 2016 using the known Apple stock market, laying the foundation for the Apple stock market in contemporary society and the future, with the aim of making an effective contribution to the field of finance by portfolio management for investors to maximize returns. 
 
-2. Background:
+### 2. Background:
 
 2.1 Neural Networks
 
@@ -28,60 +28,35 @@ Long Short-Term Memory (LSTM) is a sort of Recurrent Neural Network (RNN).[8] It
 
 By incorporating memory cells and gating mechanisms, LSTM can selectively store and access essential historical information, enabling the model to effectively learn long-term dependencies without being affected by the gradient vanishing problem. In addition, LSTM's ability to process the overall data series rather than handling individual points independently makes it capable of taking into account context and dependencies between different time stages, making it ideally suited for enhancing the efficiency and accuracy of stock market forecasts.[13]
 
-3. Data Collection:
+### 3. Data Collection:
 
 Historical stock data for Apple Inc. from 2010 to 2016 was obtained from the dataset available in the Kaggle dataset (https://www.kaggle.com/datasets/dgawlik/nyse?select=fundamentals.csv), an online open-source financial data provider. The dataset contains a range of variables that potentially have an influence on Apple's stock market price. These variables cover financial indicators such as period ending, additional income/expense items, capital expenditures, capital surplus, and cash ratios. In addition, the dataset also contains stock market indicators such as opening price, closing price, minimum price, maximum price and volume. By incorporating these various variables, we are able to conduct a comprehensive analysis that delves into the multiplicity of factors that may be weighing on Apple's stock market price and use such data to speculate on the future trends of Apple's stock market.[14]
 
-4. Implementation:
-
+### 4. Implementation:
+```python
 import pandas as PD
-
 import numpy as np
-
-# %matplotlib inline
-
 import matplotlib. pyplot as plt
-
 import matplotlib
-
 import pandas as pd
-
 from sklearn.preprocessing import MinMaxScaler
-
 from keras.layers import LSTM, Dense, Dropout
-
 from sklearn.model_selection import TimeSeriesSplit
-
 from sklearn.metrics import mean_squared_error, r2_score
-
 import matplotlib. dates as mandates
-
 from sklearn.preprocessing import MinMaxScaler
-
 from sklearn import linear_model
-
 from keras.models import Sequential
-
 from keras.layers import Dense
-
 import keras.backend as K
-
 from keras.callbacks import EarlyStopping
-
 from keras.optimizers import Adam
-
 from keras.models import load_model
-
 from keras.layers import LSTM
-
 from keras.utils import plot_model
-
 import tensorflow as tf [15]
-
+```
 In this section, we import several Python libraries and modules for performing data manipulation, visualization, machine learning, deep learning, and neural network construction.
-
-
-
 * pandas: for data manipulation and analysis.[16]
 * numpy: for numerical/mathematical operations. [17]
 * pyplot: for creating data visualizations.[18]
@@ -94,18 +69,18 @@ In this section, we import several Python libraries and modules for performing d
 * keras.optimizers.Adam: The Adam optimizer for training neural networks. Adam optimization is a stochastic gradient descent method that is based on adaptive estimation of first-order and second-order moments.[26][27]
 * keras.utils.plot_model: for plotting and saving the architecture of the model into the file[28]
 * tensorflow: a software library for performing numerical calculations using the concept of data flow graphs. In this library, the nodes in the graph represent mathematical operations, and the edges in the graph represent multidimensional arrays of data passed between these nodes, often referred to as "tensors".[29]
-
-tf.config.set_visible_devices([], 'GPU') [15]
-
-This line configures TensorFlow to use only the CPU for computations instead of the GPU. 
-
-whole_data = PD.read_csv("prices-split-adjusted.csv") [15]
-
-This line reads the contents of a CSV file named "prices-split-adjusted.csv" and stores the data in a pandas DataFrame named whole_data. This step loads the entire dataset into memory for further processing.
-
-df = PD.read_csv("prices-split-adjusted.csv", header=0, index_col='date', parse_dates=True) [15]
-
-These lines read and preprocess the data in the "prices-split-adjusted.csv" with indexing and date parsing.  
+```python
+tf.config.set_visible_devices([], 'GPU') 
+```
+This line configures TensorFlow to use only the CPU for computations instead of the GPU. [15]
+```python
+whole_data = PD.read_csv("prices-split-adjusted.csv") 
+```
+This line reads the contents of a CSV file named "prices-split-adjusted.csv" and stores the data in a pandas DataFrame named whole_data. This step loads the entire dataset into memory for further processing. [15]
+```python
+df = PD.read_csv("prices-split-adjusted.csv", header=0, index_col='date', parse_dates=True) 
+```
+These lines read and preprocess the data in the "prices-split-adjusted.csv" with indexing and date parsing. [15]
 
 “header=0” indicates that the first row of the CSV file contains the column names.[30]
 
@@ -263,7 +238,7 @@ These lines create a line plot to visualize the comparison between the true valu
 
 plt.show(): displays the plot.[63]
 
-Section 5: Results
+### Section 5: Results
 
 The following table shows the performance of the LSTM model for different unit, epoch and batch size configurations. Each configuration is accompanied by a mean square error value generated during training.
 
@@ -474,11 +449,11 @@ LSTM Model MSE: 0.0085
 
 The evaluation process of the prediction model is conducted by using the Mean Squared Error (MSE) as a measure of performance. As it quantifies the prediction error of a model, it enables us to comply with comparing the performance between different models and the distance between predicted and real values.[64] For a better assessment and analysis of the performance of LSTM models in forecasting, we propose a simple benchmark model, often referred to as the " naive model". In time series forecasting, the naive model employs some basic and intuitive forecasting methods, such as the assumption that the predicted value at time "t" is equal to the actual value at time "t-1" for forecasting purposes.[65][66] By introducing the naive model, we can build a straightforward and intuitive benchmark for evaluating the performance of the LSTM model to obtain a better understanding of the effectiveness of the LSTM model in predicting future stock movements. Specifically, we will calculate the mean square error (MSE) of the LSTM model and the naive model and compare them in performance. If the MSE of the LSTM model is significantly lower than the naive model, then we can conclude that the LSTM model performs better on more sophisticated issues in stock price prediction. This comparison helps to ensure that our models have practical predictive power in real-world applications.[67] Ultimately, naive models offer not only a basic performance benchmark for evaluating more advanced statistical and machine learning models, but also serve as a rapid prototyping tool for exploring data, laying the groundwork for more complex modeling work, and offering initial insights into the patterns of the data and the accuracy of the predictions.[68] As per the results, the Naive model has a mean squared error of 2.9258, which means that it has a large deviation from the actual price. The high MSE suggests that the Naive model has a limited capability to comprehend the underlying trend and hence its prediction reliability is relatively low. Contrarily, the LSTM model has a notably lower mean squared error loss value of 0.0085. This remarkable difference highlights the stronger predictive ability of the LSTM model relative to the Naive model. We provide details on the configuration of the LSTM model training, highlighting the number of units, the epoch duration, the batch size, and the corresponding mean squared error loss values for different settings. Reportedly, the performance of the LSTM model is dramatically improved by adjusting the epoch and batch sizes. In the preliminary case, training with 32 units, 100 epochs and 8 batches yields a mean squared error value loss of 0.4104. Through continuous parameter tuning, we succeeded in gradually reducing the mean square error (MSE) loss value and finally found the optimal model configuration: 108 units, 150 epochs and 1 batch. This process ultimately reduces the mean squared error loss to 0.0085. The reduction in the mean square error loss value of the LSTM model indicates that it is more capable of modeling the trend of the actual stock prices, implying that it is expected to provide more accurate prediction and capture the dynamics of minor differences in the market. These results amply demonstrate the close relationship between the accuracy of LSTM models and parameter optimization. Increasing the number of neuron units and the number of epochs typically enhances the model performance, while decreasing the batch size contributes to the accuracy of the model. Based on the mean square error loss values we obtained, the predictions of the model are closely related to the actual stock prices, which makes it a practical tool for investors and financial analysts. In conclusion, our study emphasizes the importance of parameter tuning to improve forecasting accuracy by exploring different system configurations. The LSTM model performs well in this study with a minimum mean square error loss value of 0.0085, reaffirming its potential as a potent tool for forecasting stock prices. This renders the LSTM model a conducive tool for making informed decisions in a sophisticated stock market environment.
 
-Section 6: Conclusion
+### Section 6: Conclusion
 
 In this research, we successfully addressed a fundamental research question on how to train a neural network model with the capability of forecasting future stock prices using Python scripts combined with Apple's historical stock data from 2010 to 2016 along with a variety of relevant variables. Our primary objective is to offer investors and financial analysts an effective tool that will enable them to make informed decisions in the evolving Apple stock market environment. Our implementation process covers complex steps of data collection, preprocessing, and model training. In this study, we leverage the strength of neural networks, specifically the Long Short-Term Memory architecture, to demonstrate the potential of machine learning in capturing sophisticated stock market dynamics. We obtained historical stock data from the Kaggle dataset, which contains various variables of stock market indicators. We trained and fine tuned the LSTM model in elaborate stages with meticulous parameter tuning. In the results section, we vividly demonstrate the performance variation of the LSTM model under different configurations. By comparing the Naive model with the LSTM model, we highlight the outstanding prediction ability of the LSTM model. It demonstrates its preeminence by dramatically reducing the Mean Squared Error. After systematically exploring the number of cells, the epoch, and batch size, we demonstrate how the accuracy of the model progressively improves with parameter finetuning. Eventually, we found the optimal settings, i.e., using 64 units, 200 epochs, and 1 batch size, which reduced the minimum mean squared error loss of the LSTM model to 0.0085. This again validates the ability of the LSTM model in recognizing complex patterns and accurately predicting stock prices. In conclusion, this study successfully addressed the research questions, achieved our research objectives, and demonstrated the power of neural networks (especially LSTM) in predicting stock prices. Through the implementation of Python scripts, we ingeniously used historical stock data to construct advanced LSTM models that outperform the base Naive model dramatically. Our results highlight the potential of LSTM models to provide investors and financial analysts with a valuable tool in the volatile Apple stock market. By providing more accurate predictions and minimizing risk, the model makes an essential contribution to the dynamic field of stock trading.
 
-7. Sources:
+### 7. Sources:
 
 [1]Khaidem, Luckyson, et al. “Predicting the Direction of Stock Market Prices Using Random Forest.” Applied Mathematical Finance, vol. 00, no. 00, 2016, pp. 1–20, arxiv.org/pdf/1605.00003.pdf.
 

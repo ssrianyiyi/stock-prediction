@@ -54,9 +54,9 @@ from keras.optimizers import Adam
 from keras.models import load_model
 from keras.layers import LSTM
 from keras.utils import plot_model
-import tensorflow as tf [15]
+import tensorflow as tf 
 ```
-In this section, we import several Python libraries and modules for performing data manipulation, visualization, machine learning, deep learning, and neural network construction.
+In this section, we import several Python libraries and modules for performing data manipulation, visualization, machine learning, deep learning, and neural network construction.[15]
 * pandas: for data manipulation and analysis.[16]
 * numpy: for numerical/mathematical operations. [17]
 * pyplot: for creating data visualizations.[18]
